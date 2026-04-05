@@ -3,7 +3,7 @@
     "dev": {
       "dependencies": ["dev:server", "dev:browser"]
     },
-    "dev:server": "NODE_ENV=development deno serve --host 127.0.0.1 --allow-sys -REN --watch server.ts",
+    "dev:server": "NODE_ENV=development deno serve --host 127.0.0.1 --allow-sys -RWEN --watch server.ts",
     "dev:browser": "deno task bundle --watch",
 
     "build": {
@@ -25,9 +25,11 @@
     "@inlay/render": "./vendor/@inlay/render/index.ts",
     "remix": "npm:remix@^3.0.0-alpha.4"
   },
+  "unstable": ["kv"],
   "compilerOptions": {
     "lib": [
       "deno.window",
+      "deno.unstable",
       "ES2024",
       "DOM",
       "DOM.Iterable",
@@ -50,5 +52,9 @@
     "rules": {
       "exclude": ["jsx-no-useless-fragment"]
     }
+  },
+  "deploy": {
+    "org": "kat",
+    "app": "video"
   }
 }

@@ -54,10 +54,8 @@ async function callXrpc(
     body?: unknown;
     params?: Record<string, string>;
   },
-  jwt?: string | null,
 ): Promise<unknown> {
   const headers: Record<string, string> = {};
-  if (jwt) headers["Authorization"] = `Bearer ${jwt}`;
 
   if (params.type === "query") {
     const qs = new URLSearchParams();
@@ -96,7 +94,7 @@ async function callXrpc(
   return res.json();
 }
 
-export function createResolver(_viewerDid?: string | null): Resolver {
+export function createResolver(): Resolver {
   return {
     fetchRecord(uri) {
       return fetchRecordFromPds(uri);
@@ -123,12 +121,6 @@ export function createResolver(_viewerDid?: string | null): Resolver {
           `XRPC resolve failed for ${params.nsid} (did=${params.did})`,
         );
       }
-
-      // Personalized: get service JWT, skip server cache
-      // if (params.personalized && viewerDid) {
-      //   const jwt = await getServiceJwt(viewerDid, params.did, params.nsid);
-      //   return callXrpc(serviceUrl, params, jwt);
-      // }
 
       if (!params.componentUri || params.type === "query") {
         return callXrpc(serviceUrl, params);
