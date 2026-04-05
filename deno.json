@@ -4,9 +4,15 @@
       "dependencies": ["dev:server", "dev:browser"]
     },
     "dev:server": "NODE_ENV=development deno serve --host 127.0.0.1 --allow-sys -REN --watch server.ts",
-    "dev:browser": "deno bundle --outdir=public/assets --minify --code-splitting --sourcemap --watch --platform browser app/assets/*.tsx",
-    "build:browser": "deno bundle --outdir=public/assets --minify --code-splitting --platform browser app/assets/*.tsx",
+    "dev:browser": "deno task bundle --watch",
+
+    "build": {
+      "dependencies": ["bundle", "lex:build"]
+    },
+
+    "bundle": "deno bundle --outdir=public/assets --minify --code-splitting --sourcemap --platform browser app/assets/*.tsx",
     "start": "deno serve -REN --allow-sys server.ts",
+
     "lex": "lex",
     "lex:build": "lex build --out ./generated --importExt .ts --clear"
   },
