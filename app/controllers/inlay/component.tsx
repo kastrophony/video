@@ -24,7 +24,7 @@ initRender(renderOptions);
 
 export const componentAction = {
   async handler(context) {
-    const { did, collection, rkey } = context.params;
+    const { atUri } = context.params;
     const componentUri = context.url.searchParams.get("componentUri");
 
     if (!componentUri) {
@@ -50,11 +50,11 @@ export const componentAction = {
       }
 
       const componentRecord = component as ComponentRecord;
-      const uri = `at://${did}/${collection}/${rkey}`;
+      const recordUri = atUri;
       const qs = new URL(c.request.url);
       qs.searchParams.delete("childNsid");
       setQueryString(qs.search.slice(1));
-      setRecordUri(uri);
+      setRecordUri(recordUri);
       setComponentUri(componentUri);
       // When a childNsid param is present, render just that child component
       // (used by the Loading primitive to stream deferred tab content).
@@ -62,24 +62,28 @@ export const componentAction = {
       let element;
       let ctx;
       if (childNsid) {
-        const childComponentUri = `at://${
-          new AtUri(componentUri).host
-        }/at.inlay.component/${childNsid}` as AtUriString;
-        const childComponent = await resolver.fetchRecord(childComponentUri);
+        const { host } = new AtUri(componentUri);
+        const childComponentUri = new AtUri(
+          `at://${host}/at.inlay.component/${childNsid}`,
+        );
+        const childComponent = await resolver.fetchRecord(
+          childComponentUri.toString(),
+        );
+
         if (!childComponent) {
           return render(
             <div class="error">Child component not found: {childNsid}</div>,
             { request: c.request, router: c.router },
           );
         }
-        element = $(childNsid, { uri });
+        element = $(childNsid, { uri: recordUri });
         ctx = createContext(
           childComponent as ComponentRecord,
-          childComponentUri,
+          childComponentUri.toString(),
         );
       } else {
         const nsid = new AtUri(componentUri).rkey;
-        element = $(nsid, { uri });
+        element = $(nsid, { uri: recordUri });
         ctx = createContext(componentRecord, componentUri);
       }
 

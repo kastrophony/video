@@ -5,18 +5,17 @@ import {
   resolveEndpoint,
   type Resolver,
 } from "@inlay/render";
-import { AtUri } from "@atproto/syntax";
 import { Frame, type RemixNode } from "remix/component";
 
-import "./types.ts";
-import { Tabs as TabsEntry } from "../assets/tabs.tsx";
 import { InfiniteScroll as InfiniteScrollEntry } from "../assets/infinite-scroll.tsx";
+import { Tabs as TabsEntry } from "../assets/tabs.tsx";
 import { routes } from "../routes.ts";
+import "./types.ts";
 
 // renderNode and resolver are injected to avoid circular deps
 let _renderNode: (node: unknown, ctx: RenderContext) => Promise<RemixNode>;
 let _resolver: Resolver;
-let _qs: string = "";
+let _qs: URLSearchParams = new URLSearchParams();
 
 export function setRenderNode(
   fn: (node: unknown, ctx: RenderContext) => Promise<RemixNode>,
@@ -29,7 +28,7 @@ export function setResolver(resolver: Resolver) {
 }
 
 export function setQueryString(qs: string) {
-  _qs = qs;
+  _qs = new URLSearchParams(qs);
 }
 
 let _recordUri: string = "";
@@ -308,21 +307,22 @@ async function Link({ ctx, props }: PrimitiveProps) {
   if (!p.uri) return <></>;
 
   const content = p.children != null ? await rn(p.children, ctx) : p.uri;
-  const qs = _qs ? `?${_qs}` : "";
 
   if (p.uri.startsWith("did:")) {
+    const href = routes.app.href({ atUri: p.uri }, Object.fromEntries(_qs));
     return (
       <org-atsui-link decoration={p.decoration || undefined}>
-        <a href={`/at/${p.uri}${qs}`}>{content}</a>
+        <a href={href}>{content}</a>
       </org-atsui-link>
     );
   }
 
   const parsed = p.uri.startsWith("at://") ? parseAtUri(p.uri) : null;
   if (parsed) {
-    const href = parsed.collection
-      ? `/at/${parsed.did}/${parsed.collection}/${parsed.rkey}${qs}`
-      : `/at/${parsed.did}${qs}`;
+    const atUri = parsed.collection
+      ? `at://${parsed.did}/${parsed.collection}/${parsed.rkey}`
+      : `at://${parsed.did}`;
+    const href = routes.app.href({ atUri }, Object.fromEntries(_qs));
     return (
       <org-atsui-link decoration={p.decoration || undefined}>
         <a href={href}>{content}</a>
@@ -376,9 +376,8 @@ async function Loading({ ctx, props }: PrimitiveProps) {
   const child = children[0] as { type?: string };
   if (!child.type) return <>{fallback}</>;
 
-  const parsed = new AtUri(_recordUri);
   const src = routes.inlay.component.href(
-    { did: parsed.host, collection: parsed.collection, rkey: parsed.rkey },
+    { atUri: _recordUri },
     { componentUri: _componentUri, childNsid: child.type },
   );
 
@@ -479,7 +478,7 @@ async function List({ ctx, props }: PrimitiveProps): Promise<RemixNode> {
 function Record({ props }: PrimitiveProps) {
   const p = props as { uri?: string };
   if (!p.uri) return <></>;
-  const href = `/at/${p.uri.replace("at://", "")}`;
+  const href = routes.app.href({ atUri: p.uri });
   return (
     <org-atsui-stack gap="medium" inset>
       <org-atsui-caption>Record</org-atsui-caption>

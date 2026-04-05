@@ -4,10 +4,10 @@ export const routes = route({
   assets: "/assets/*path",
 
   index: "/",
-  app: "/at/:did/:collection/:rkey",
+  app: "/*atUri",
 
   inlay: route("inlay", {
-    component: "/:did/:collection/:rkey",
+    component: "/*atUri",
     list: "/list",
   }),
 });
