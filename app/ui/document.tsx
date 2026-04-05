@@ -25,6 +25,11 @@ export function Document() {
         }}
       >
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>{children}</div>
+        <div style={{ opacity: 0, height: 0 }}>
+          {/*I'm a safari hack 😵‍💫 fixes naturally when app page has more content*/}
+          {/*Safari buffers all streamed responses because the initial page is too minimal*/}
+          {".".repeat(3000)}
+        </div>
       </body>
     </html>
   );
