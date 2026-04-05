@@ -7,7 +7,7 @@
     "dev:browser": "deno task bundle --watch",
 
     "build": {
-      "dependencies": ["bundle", "lex:build"]
+      "dependencies": ["bundle"]
     },
 
     "bundle": "deno bundle --outdir=public/assets --minify --code-splitting --sourcemap --platform browser app/assets/*.tsx",
