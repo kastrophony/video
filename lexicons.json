@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "lexicons": [
+    "at.inlay.component"
+  ],
+  "resolutions": {
+    "at.inlay.component": {
+      "uri": "at://did:plc:mdg3w2kpadcyxy33pizokzf3/com.atproto.lexicon.schema/at.inlay.component",
+      "cid": "bafyreid76brwsr2sl3lgcir65ksuunitewj7pvzuetx34n375rcgeqsvuy"
+    },
+    "at.inlay.defs": {
+      "uri": "at://did:plc:mdg3w2kpadcyxy33pizokzf3/com.atproto.lexicon.schema/at.inlay.defs",
+      "cid": "bafyreieum33geki2mmkrqbujynl7jd6bjyyrzo57ylyx2k5f5cisdjm7qq"
+    }
+  }
+}

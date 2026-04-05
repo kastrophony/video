@@ -1,0 +1,169 @@
+/* host-theme.css */
+
+at-inlay-root {
+    --text-primary: #111;
+    --text-body: #444;
+    --text-secondary: #999;
+
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: #fff;
+    border-radius: 12px;
+    -webkit-font-smoothing: antialiased;
+}
+
+at-inlay-root[data-page],
+at-inlay-root[data-full] {
+    border-radius: 0;
+}
+
+/* Gap */
+
+:is(org-atsui-stack, org-atsui-row, org-atsui-grid)[gap="none"] {
+    gap: 0;
+}
+:is(org-atsui-stack, org-atsui-row, org-atsui-grid)[gap="small"] {
+    gap: 6px;
+}
+:is(org-atsui-stack, org-atsui-row, org-atsui-grid)[gap="medium"] {
+    gap: 12px;
+}
+:is(org-atsui-stack, org-atsui-row, org-atsui-grid)[gap="large"] {
+    gap: 24px;
+}
+
+/* Type */
+
+org-atsui-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+org-atsui-heading {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+org-atsui-text {
+    color: var(--text-body);
+}
+
+org-atsui-text b,
+org-atsui-text strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+org-atsui-caption {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+/* Avatar */
+
+org-atsui-avatar {
+    border-radius: 50%;
+}
+
+/* Cover */
+
+org-atsui-cover::before {
+    height: 200px;
+    background:
+        linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 50%),
+        var(--cover-src) center / cover no-repeat;
+}
+
+/* Avatar lift */
+
+org-atsui-avatar[lift] {
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 3px #fff;
+}
+org-atsui-avatar[lift][size="xsmall"] {
+    margin-top: calc(-10px - var(--inset, 0px));
+}
+org-atsui-avatar[lift][size="small"] {
+    margin-top: calc(-16px - var(--inset, 0px));
+}
+org-atsui-avatar[lift][size="medium"] {
+    margin-top: calc(-24px - var(--inset, 0px));
+}
+org-atsui-avatar[lift][size="large"] {
+    margin-top: calc(-40px - var(--inset, 0px));
+}
+
+/* Blob */
+
+org-atsui-blob img {
+    border-radius: 8px;
+}
+
+/* Inset */
+
+:is(org-atsui-stack, org-atsui-row)[inset] {
+    --inset: 12px;
+    padding: 12px;
+}
+
+/* Link */
+
+org-atsui-link a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+org-atsui-link[decoration="underline"] a {
+    text-decoration: underline;
+    color: #1a6dca;
+}
+
+org-atsui-link a:hover {
+    opacity: 0.85;
+}
+
+/* List separators */
+
+hr {
+    border: none;
+    height: 1px;
+    background: #eee;
+    margin: 0;
+    width: 100%;
+}
+
+/* Tabs */
+
+org-atsui-tabs .tabs-bar {
+    gap: 0;
+    border-bottom: 1px solid #eee;
+    padding: 0 16px;
+    background: #fff;
+}
+
+org-atsui-tabs .tabs-bar button {
+    flex: 1;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 10px 0;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+org-atsui-tabs .tabs-bar button[aria-selected="true"] {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+    font-weight: 600;
+}
+
+org-atsui-tabs .tabs-bar button:hover:not([aria-selected="true"]) {
+    color: #666;
+}

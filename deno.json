@@ -1,0 +1,48 @@
+{
+  "tasks": {
+    "dev": {
+      "dependencies": ["dev:server", "dev:browser"]
+    },
+    "dev:server": "NODE_ENV=development deno serve --host 127.0.0.1 --allow-sys -REN --watch server.ts",
+    "dev:browser": "deno bundle --outdir=public/assets --minify --code-splitting --sourcemap --watch --platform browser app/assets/*.tsx",
+    "build:browser": "deno bundle --outdir=public/assets --minify --code-splitting --platform browser app/assets/*.tsx",
+    "start": "deno serve -REN --allow-sys server.ts",
+    "lex": "lex",
+    "lex:build": "lex build --out ./generated --importExt .ts --clear"
+  },
+  "imports": {
+    "@atproto/lex": "npm:@atproto/lex@^0.0.23",
+    "@atproto/lex-resolver": "npm:@atproto/lex-resolver@^0.0.20",
+    "@atproto/lexicon": "npm:@atproto/lexicon@^0.6.2",
+    "@atproto/syntax": "npm:@atproto/syntax@^0.5.3",
+    "@inlay/core": "npm:@inlay/core@^0.0.13",
+    "@inlay/render": "./vendor/@inlay/render/index.ts",
+    "remix": "npm:remix@^3.0.0-alpha.4"
+  },
+  "compilerOptions": {
+    "lib": [
+      "deno.window",
+      "ES2024",
+      "DOM",
+      "DOM.Iterable",
+      "DOM.AsyncIterable"
+    ],
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "remix/component"
+  },
+  "nodeModulesDir": "auto",
+  "exclude": [
+    "public/assets",
+    "lexicons.json",
+    "lexicons",
+    "generated",
+    "**/*.css"
+  ],
+  "lint": {
+    "rules": {
+      "exclude": ["jsx-no-useless-fragment"]
+    }
+  }
+}

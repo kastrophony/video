@@ -1,0 +1,243 @@
+/* Structural reset for inlay custom elements.
+   Display modes, flex, sizing. No visual styling.
+   Everything visual comes from host-theme.css. */
+
+at-inlay-root {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    position: relative;
+}
+at-inlay-root[data-page] {
+    width: 100%;
+    max-width: 600px;
+}
+at-inlay-root[data-full] {
+    width: 100%;
+    min-height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+}
+at-inlay-root:has(org-atsui-stack),
+at-inlay-root:has(org-atsui-grid) {
+    width: 100%;
+}
+
+/* Stack — vertical flex, fills parent width */
+
+org-atsui-stack {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: inherit;
+}
+org-atsui-stack[align="start"] {
+    align-items: flex-start;
+}
+org-atsui-stack[align="center"] {
+    align-items: center;
+}
+org-atsui-stack[align="end"] {
+    align-items: flex-end;
+}
+org-atsui-stack[align="stretch"] {
+    align-items: stretch;
+}
+org-atsui-stack[sticky] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Row — horizontal flex, hugs content */
+
+org-atsui-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    text-align: inherit;
+}
+org-atsui-row[align="start"] {
+    align-items: flex-start;
+}
+org-atsui-row[align="center"] {
+    align-items: center;
+}
+org-atsui-row[align="end"] {
+    align-items: flex-end;
+}
+org-atsui-row[sticky] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Justify — shared between Stack and Row */
+
+:is(org-atsui-stack, org-atsui-row)[justify="between"] {
+    justify-content: space-between;
+}
+:is(org-atsui-stack, org-atsui-row)[justify="center"] {
+    justify-content: center;
+}
+:is(org-atsui-stack, org-atsui-row)[justify="end"] {
+    justify-content: flex-end;
+}
+
+/* Fill — greedy child, takes remaining space on parent main axis */
+
+org-atsui-fill {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Text elements */
+
+org-atsui-title,
+org-atsui-heading,
+org-atsui-text,
+org-atsui-caption {
+    display: block;
+    overflow-wrap: break-word;
+}
+org-atsui-timestamp {
+    display: inline;
+}
+
+/* Avatar — fixed dimensions, never stretches */
+
+org-atsui-avatar {
+    display: block;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+org-atsui-avatar[size="xsmall"] {
+    width: 20px;
+    height: 20px;
+}
+org-atsui-avatar[size="small"] {
+    width: 32px;
+    height: 32px;
+}
+org-atsui-avatar[size="medium"] {
+    width: 48px;
+    height: 48px;
+}
+org-atsui-avatar[size="large"] {
+    width: 80px;
+    height: 80px;
+}
+org-atsui-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Cover — full-bleed background image */
+
+org-atsui-cover {
+    display: block;
+    width: 100%;
+}
+org-atsui-cover::before {
+    content: "";
+    display: block;
+}
+
+/* Clip — constrains child height relative to own width.
+   cqi custom props are set on the outer element; the inner
+   div resolves them relative to Clip's inline size. */
+
+org-atsui-clip {
+    display: block;
+    container-type: inline-size;
+}
+org-atsui-clip > div {
+    display: grid;
+    grid-template-rows: auto;
+    min-height: var(--clip-min, 0px);
+    max-height: var(--clip-max, none);
+    overflow: hidden;
+}
+
+/* Blob — image container */
+
+org-atsui-blob {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+}
+org-atsui-blob[fit] {
+    height: 100%;
+}
+org-atsui-blob img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+org-atsui-blob[fit] img {
+    height: 100%;
+}
+org-atsui-blob[fit="contain"] img {
+    object-fit: contain;
+}
+
+/* Link — transparent wrapper */
+
+org-atsui-link {
+    display: contents;
+}
+org-atsui-link a {
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
+/* Tabs */
+
+org-atsui-tabs {
+    display: flex;
+    flex-direction: column;
+}
+org-atsui-tabs .tabs-bar {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+org-atsui-tabs .tabs-bar button {
+    all: unset;
+    cursor: pointer;
+}
+
+/* Grid — equal columns */
+
+org-atsui-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
+    width: 100%;
+}
+
+org-atsui-grid hr {
+    display: none;
+}
+
+/* Infinite scroll wrappers are layout-transparent so grid/flex parents
+   can treat their contents as direct children. */
+.infinite-scroll,
+.infinite-scroll-page,
+[data-list-page] {
+    display: contents;
+}
