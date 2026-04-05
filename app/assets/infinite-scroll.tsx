@@ -68,8 +68,9 @@ export const InfiniteScroll = clientEntry(
 
       return (
         <div
+          data-list-page
           mix={css({
-            "[data-list-page]": {
+            "&": {
               display: "contents",
             },
           })}
@@ -78,9 +79,10 @@ export const InfiniteScroll = clientEntry(
           {pageUrls.map((url) => (
             <div
               key={url}
+              data-list-page
               mix={[
                 css({
-                  "[data-list-page]": {
+                  "&": {
                     display: "contents",
                   },
                 }),
