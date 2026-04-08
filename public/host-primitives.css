@@ -179,7 +179,7 @@ org-atsui-blob {
     overflow: hidden;
     width: 100%;
 }
-org-atsui-blob[fit] {
+org-atsui-blob[fit="cover"] {
     height: 100%;
 }
 org-atsui-blob img {
@@ -187,7 +187,7 @@ org-atsui-blob img {
     width: 100%;
     object-fit: cover;
 }
-org-atsui-blob[fit] img {
+org-atsui-blob[fit="cover"] img {
     height: 100%;
 }
 org-atsui-blob[fit="contain"] img {
