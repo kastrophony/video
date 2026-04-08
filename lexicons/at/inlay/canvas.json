@@ -1,0 +1,79 @@
+{
+  "id": "at.inlay.canvas",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "windows"
+        ],
+        "properties": {
+          "windows": {
+            "type": "array",
+            "items": {
+              "ref": "#window",
+              "type": "ref"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "overrides": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "did"
+            },
+            "description": "Ordered DID stack for resolution overrides. DIDs listed here are prepended to every component's import stack during rendering."
+          }
+        }
+      },
+      "description": "Canvas - a spatial arrangement of component windows."
+    },
+    "window": {
+      "type": "object",
+      "required": [
+        "id",
+        "x",
+        "y",
+        "z",
+        "componentUri"
+      ],
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "props": {
+          "type": "unknown",
+          "description": "Properties to pass to the component."
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "componentUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT URI of the component record to render."
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

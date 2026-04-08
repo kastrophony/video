@@ -50,15 +50,17 @@ function InlayPage() {
     },
   ) => (
     <Document title={`at://${did}/${collection}/${rkey}`}>
-      <h1>Inlay Components</h1>
-      <Frame
-        src={routes.inlay.component.href({
-          atUri: `at://${did}/${collection}/${rkey}`,
-        }, {
-          componentUri,
-        })}
-        fallback={<p>{new Date().toLocaleTimeString()}</p>}
-      />
+      <div style={{ width: "760px", margin: "0 auto", padding: 24 }}>
+        <h1>Inlay Demo</h1>
+        <Frame
+          src={routes.inlay.component.href({
+            atUri: `at://${did}/${collection}/${rkey}`,
+          }, {
+            componentUri,
+          })}
+          fallback={<p>{new Date().toLocaleTimeString()}</p>}
+        />
+      </div>
     </Document>
   );
 }

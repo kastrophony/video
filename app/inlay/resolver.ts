@@ -15,7 +15,7 @@ type ComponentResponse = {
 
 const SLINGSHOT = "https://slingshot.microcosm.blue";
 
-async function fetchRecordFromPds(uri: string): Promise<unknown | null> {
+export async function fetchRecordFromPds(uri: string): Promise<unknown | null> {
   const key = `record:${uri}`;
   const hit = await cacheGet(key);
   if (hit !== undefined) return hit;

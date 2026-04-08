@@ -5,6 +5,7 @@ export const routes = route({
 
   index: "/",
   app: "/*atUri",
+  canvas: "canvas/*atUri",
 
   inlay: route("inlay", {
     component: "/*atUri",

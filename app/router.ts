@@ -8,6 +8,7 @@ import { componentAction } from "./controllers/inlay/component.tsx";
 import { listAction } from "./controllers/inlay/list.tsx";
 import { routes } from "./routes.ts";
 import { indexAction } from "./controllers/index.tsx";
+import { canvasAction } from "./controllers/canvas.tsx";
 
 const middleware = [];
 
@@ -27,5 +28,6 @@ middleware.push(
 export const router = createRouter({ middleware });
 router.get(routes.index, indexAction);
 router.get(routes.app, appAction);
+router.get(routes.canvas, canvasAction);
 router.get(routes.inlay.component, componentAction);
 router.get(routes.inlay.list, listAction);

@@ -15,17 +15,23 @@ export function Document() {
         <script async type="module" src="/assets/entry.js" />
         <link rel="stylesheet" href="/host-primitives.css" />
         <link rel="stylesheet" href="/host-theme.css" />
+        <style>
+          {`* {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          }`}
+        </style>
       </head>
       <body
         style={{
           fontFamily:
             "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji",
           margin: 0,
-          padding: 24,
         }}
       >
-        <div style={{ maxWidth: "760px", margin: "0 auto" }}>{children}</div>
-        <div style={{ opacity: 0, height: 0 }}>
+        <div style={{ margin: "0 auto", height: "100dvh" }}>{children}</div>
+        <div style={{ opacity: 0, height: 0, overflow: "hidden" }}>
           {/*I'm a safari hack 😵‍💫 fixes naturally when app page has more content*/}
           {/*Safari buffers all streamed responses because the initial page is too minimal*/}
           {".".repeat(3000)}
