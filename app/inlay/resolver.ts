@@ -6,6 +6,8 @@ import { cacheGet, cacheSet } from "./cache.ts";
 import { resolveDidToService } from "./resolve.ts";
 import { CachePolicy, CacheTag } from "./types.ts";
 
+const SLINGSHOT = "https://slingshot.microcosm.blue";
+
 const lexResolver = new LexResolver({});
 
 type ComponentResponse = {
@@ -13,7 +15,36 @@ type ComponentResponse = {
   cache?: CachePolicy;
 };
 
-const SLINGSHOT = "https://slingshot.microcosm.blue";
+export async function listRecordsFromPds(
+  did: string,
+  collection: string,
+): Promise<Array<{ uri: string; value: unknown }>> {
+  const key = `list:${did}:${collection}`;
+  const hit = await cacheGet(key);
+  if (hit !== undefined) return hit as Array<{ uri: string; value: unknown }>;
+
+  try {
+    const pds = await resolveDidToService(did, "#atproto_pds");
+    const res = await fetch(
+      `${pds}/xrpc/com.atproto.repo.listRecords?repo=${
+        encodeURIComponent(did)
+      }&collection=${encodeURIComponent(collection)}&limit=100`,
+    );
+
+    if (!res.ok) {
+      await cacheSet(key, [], { life: "minutes" });
+      return [];
+    }
+
+    const data = await res.json();
+    const records = data.records || [];
+    await cacheSet(key, records, { life: "hours" });
+    return records;
+  } catch {
+    await cacheSet(key, [], { life: "minutes" });
+    return [];
+  }
+}
 
 export async function fetchRecordFromPds(uri: string): Promise<unknown | null> {
   const key = `record:${uri}`;

@@ -309,7 +309,7 @@ async function Link({ ctx, props }: PrimitiveProps) {
   const content = p.children != null ? await rn(p.children, ctx) : p.uri;
 
   if (p.uri.startsWith("did:")) {
-    const href = routes.app.href({ atUri: p.uri }, Object.fromEntries(_qs));
+    const href = routes.app.href({ atUri: p.uri }, {});
     return (
       <org-atsui-link decoration={p.decoration || undefined}>
         <a href={href}>{content}</a>
@@ -322,7 +322,8 @@ async function Link({ ctx, props }: PrimitiveProps) {
     const atUri = parsed.collection
       ? `at://${parsed.did}/${parsed.collection}/${parsed.rkey}`
       : `at://${parsed.did}`;
-    const href = routes.app.href({ atUri }, Object.fromEntries(_qs));
+    const qs = atUri === _recordUri ? Object.fromEntries(_qs) : {};
+    const href = routes.app.href({ atUri }, qs);
     return (
       <org-atsui-link decoration={p.decoration || undefined}>
         <a href={href}>{content}</a>

@@ -3,15 +3,19 @@ import { Frame } from "remix/component";
 import type { BuildAction } from "remix/fetch-router";
 import { redirect } from "remix/response/redirect";
 
+import { resolveComponentUri } from "../inlay/components.ts";
 import { routes } from "../routes.ts";
 import { Document } from "../ui/document.tsx";
 import { render } from "../utils/render.ts";
 
 export const appAction = {
-  handler(context) {
+  async handler(context) {
     const { atUri } = context.params;
     const { did, collection, rkey } = new AtUri(atUri);
-    const componentUri = context.url.searchParams.get("componentUri");
+    const componentUri = context.url.searchParams.get("componentUri") ||
+      await resolveComponentUri(
+        collection,
+      );
 
     if (!collection || !rkey) {
       const collection = "app.bsky.actor.profile";
